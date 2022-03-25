@@ -271,7 +271,7 @@ After many runs of the model, I converged on a learning rate of 2e-05 and 3 epoc
 
 ![image](wandb-figures/bert-slant.png)
 
-## Running the Fine-tuned Model on Cable News Corpus
+## Running the Fine-tuned Model on the Cable News Corpus
 
 I then ran this model on my dataset of cable news broadcasts (≈6 million 1-minute broadcast segments) to get the predicted ideology scores of the media broadcasts. I load these results in, and merge them to some metadata so we can start to explore slant on the media. 
 
