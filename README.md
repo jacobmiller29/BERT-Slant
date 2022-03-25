@@ -30,7 +30,9 @@ sns.set_theme(style="ticks")
 
 ```
 
-Now we want to load in the data that was used to trained the BERT slant model. Because these datasets are very large, they are not available in this repo. If you'd like access to this data, send me an email!
+## Congressional Speeches and Ideology Data 
+
+Now we want to load in the data that was used to train the BERT slant model. Because these datasets are very large, they are not available in this repo. If you'd like access to this data, send me an email!
 
 The data consists of speeches given by politicians during the 111th-114th Congresses (2009-2016) paired with information on the politicians' ideology. The speeches come from Gentzkow, Shapiro and Taddy (2019), who collected the data from the Congressional Record. They cleaned and parsed the speeches, making them far easier to work with. The politician ideology estimates come from Voteview.com. They estimate politician ideology based on observed voting behavior in Congress. Intuitively, if two politicians consistently vote similarly to one another, then they will be estimated to have a similar ideology. 
 
@@ -353,6 +355,8 @@ plt.show()
     
 
 
+## Bert Model Fine-Tuning 
+
 Next, I used this data to fine-tune the BERT model to recognize ideological speech. The "features" are the text of the speeches, and the target labels are the ideological scores. Because ideology is a continuous variable, the training task was a regression task (adding a final linear layer to the BERT model). To converge on a final model, I used WandB sweeps to tune the two most important hyperparameters of these models, the learning rate and the number of epochs. Because these models are very costly to train, I do not do this here. You can see the code for this in scripts/3-bertslant-sweep.py. The results from training these models on powerful cloud computing systems with GPUs on the UZH science cloud platform are presented below from WandB:
 
 <iframe src="https://wandb.ai/jacob-miller29/Slant%20Hyperparamater%20Optimization/reports/Slant-Hyperparameter-Optimization--VmlldzoxNzM5NDY5" style="border:none;height:1024px;width:100%">
@@ -367,6 +371,8 @@ After many runs of the model, I converged on a learning rate of 2e-05 and 3 epoc
 
 <iframe src="https://wandb.ai/jacob-miller29/bert-slant/workspace?jupyter=true" style="border:none;width:100%;height:420px;"></iframe>
 
+
+## Running the Fine-tuned Model on Cable News Corpus
 
 I then ran this model on my dataset of cable news broadcasts (≈6 million 1-minute broadcast segments) to get the predicted ideology scores of the media broadcasts. I load these results in, and merge them to some metadata so we can start to explore slant on the media. 
 
