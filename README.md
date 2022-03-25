@@ -28,6 +28,8 @@ sns.set_theme(style="ticks")
 
 %matplotlib inline
 
+api = wandb.Api()
+
 ```
 
 ## Congressional Speeches and Ideology Data 
@@ -51,7 +53,7 @@ Below we can see that we have a lot of information to go along with the speeches
 
 ```python
 # get a selection of data for viewing
-cong_ideology_training.sample(n=10, random_state=1)
+cong_ideology_training.sample(n=5, random_state=1)
 ```
 
 
@@ -189,101 +191,6 @@ cong_ideology_training.sample(n=10, random_state=1)
       <td>0.688</td>
       <td>-0.243</td>
     </tr>
-    <tr>
-      <th>327449</th>
-      <td>114119620</td>
-      <td>1140077267</td>
-      <td>GREEN</td>
-      <td>AL</td>
-      <td>H</td>
-      <td>TX</td>
-      <td>M</td>
-      <td>D</td>
-      <td>9.0</td>
-      <td>voting</td>
-      <td>mr. speaker. in consuming this time. let me co...</td>
-      <td>114</td>
-      <td>11</td>
-      <td>G000553</td>
-      <td>-0.438</td>
-      <td>0.305</td>
-    </tr>
-    <tr>
-      <th>327227</th>
-      <td>114119591</td>
-      <td>1140051405</td>
-      <td>GRASSLEY</td>
-      <td>CHARLES</td>
-      <td>S</td>
-      <td>IA</td>
-      <td>M</td>
-      <td>R</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>mr. president. the popes visit this week to ou...</td>
-      <td>114</td>
-      <td>78</td>
-      <td>G000386</td>
-      <td>0.349</td>
-      <td>-0.068</td>
-    </tr>
-    <tr>
-      <th>264838</th>
-      <td>112120751</td>
-      <td>1120092156</td>
-      <td>PAUL</td>
-      <td>RAND</td>
-      <td>S</td>
-      <td>KY</td>
-      <td>M</td>
-      <td>R</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>the question i have for senate is. has your go...</td>
-      <td>112</td>
-      <td>52</td>
-      <td>P000603</td>
-      <td>0.877</td>
-      <td>-0.480</td>
-    </tr>
-    <tr>
-      <th>236504</th>
-      <td>112117441</td>
-      <td>1120014802</td>
-      <td>LEVIN</td>
-      <td>CARL</td>
-      <td>S</td>
-      <td>MI</td>
-      <td>M</td>
-      <td>D</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>mr. president. the badly misguided budget cuts...</td>
-      <td>112</td>
-      <td>44</td>
-      <td>L000261</td>
-      <td>-0.395</td>
-      <td>-0.116</td>
-    </tr>
-    <tr>
-      <th>245826</th>
-      <td>112118381</td>
-      <td>1120116904</td>
-      <td>REED</td>
-      <td>JOHN</td>
-      <td>S</td>
-      <td>RI</td>
-      <td>M</td>
-      <td>D</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>madam president. the agriculture reform. food....</td>
-      <td>112</td>
-      <td>44</td>
-      <td>R000122</td>
-      <td>-0.367</td>
-      <td>-0.172</td>
-    </tr>
   </tbody>
 </table>
 </div>
@@ -359,13 +266,21 @@ plt.show()
 
 Next, I used this data to fine-tune the BERT model to recognize ideological speech. The "features" are the text of the speeches, and the target labels are the ideological scores. Because ideology is a continuous variable, the training task was a regression task (adding a final linear layer to the BERT model). To converge on a final model, I used WandB sweeps to tune the two most important hyperparameters of these models, the learning rate and the number of epochs. Because these models are very costly to train, I do not do this here. You can see the code for this in scripts/3-bertslant-sweep.py. The results from training these models on powerful cloud computing systems with GPUs on the UZH science cloud platform are presented below from WandB:
 
-<iframe src="https://wandb.ai/jacob-miller29/Slant%20Hyperparamater%20Optimization/reports/Slant-Hyperparameter-Optimization--VmlldzoxNzM5NDY5" style="border:none;height:1024px;width:100%">
+
+```python
+%wandb jacob-miller29/Slant%20Hyperparamater%20Optimization/reports/Slant-Hyperparameter-Optimization--VmlldzoxNzM5NDY5
+```
+
+
+<iframe src="https://wandb.ai/jacob-miller29/Slant%20Hyperparamater%20Optimization/reports/Slant-Hyperparameter-Optimization--VmlldzoxNzM5NDY5?jupyter=true" style="border:none;width:100%;height:420px;"></iframe>
+
 
 After many runs of the model, I converged on a learning rate of 2e-05 and 3 epochs of training as the optimal hyperparameters in this setting. I then trained a model with these hyperparameters in scripts/4-train-bertslant-algorithm.py. The results are presented below. As we can see, the model reaches an $R^2$ of 0.59, meaning that given the text of speeches in the test set, the model can explain 59% of the variation in politician ideology. 
 
 
 ```python
 %wandb jacob-miller29/bert-slant
+
 ```
 
 
