@@ -28,8 +28,6 @@ sns.set_theme(style="ticks")
 
 %matplotlib inline
 
-api = wandb.Api()
-
 ```
 
 ## Congressional Speeches and Ideology Data 
@@ -262,17 +260,18 @@ plt.show()
     
 
 
-## Bert Model Fine-Tuning 
+
+## Bert Model Fine-Tuning 
 
 Next, I used this data to fine-tune the BERT model to recognize ideological speech. The "features" are the text of the speeches, and the target labels are the ideological scores. Because ideology is a continuous variable, the training task was a regression task (adding a final linear layer to the BERT model). To converge on a final model, I used WandB sweeps to tune the two most important hyperparameters of these models, the learning rate and the number of epochs. Because these models are very costly to train, I do not do this here. You can see the code for this in scripts/3-bertslant-sweep.py. The results from training these models on powerful cloud computing systems with GPUs on the UZH science cloud platform are presented below from WandB:
 
 ![image](wandb-figures/hyperparameter-sweep.png)
 
-After many runs of the model, I converged on a learning rate of 2e-05 and 3 epochs of training as the optimal hyperparameters in this setting. I then trained a model with these hyperparameters in scripts/4-train-bertslant-algorithm.py. The results are presented below. As we can see, the model reaches an $R^2$ of 0.59, meaning that given the text of speeches in the test set, the model can explain 59% of the variation in politician ideology. 
+After many runs of the model, I converged on a learning rate of 2e-05 and 3 epochs of training as the optimal hyperparameters in this setting. I then trained a model with these hyperparameters in scripts/4-train-bertslant-algorithm.py. The results are presented below. As we can see, the model reaches an R-squared of 0.59, meaning that given the text of speeches in the test set, the model can explain 59% of the variation in politician ideology. 
 
 ![image](wandb-figures/bert-slant.png)
 
-## Running the Fine-tuned Model on Cable News Corpus
+## Running the Fine-tuned Model on Cable News Corpus
 
 I then ran this model on my dataset of cable news broadcasts (≈6 million 1-minute broadcast segments) to get the predicted ideology scores of the media broadcasts. I load these results in, and merge them to some metadata so we can start to explore slant on the media. 
 
