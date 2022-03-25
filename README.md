@@ -29,6 +29,8 @@ from pprint import pprint
 
 sns.set_theme(style="ticks")
 
+%matplotlib inline
+
 ```
 
 Now we want to load in the data that was used to trained the BERT slant model. This data consists of speeches given by politicians during the 111th-114th Congresses (2009-2016) paired with information on the politicians' ideology. The speeches come from Gentzkow, Shapiro and Taddy (2019), who collected the data from the Congressional Record. They cleaned and parsed the speeches, making them far easier to work with. The politician ideology estimates come from Voteview.com. They estimate politician ideology based on observed voting behavior in Congress. Intuitively, if two politicians consistently vote similarly to one another, then they will be estimated to have a similar ideology. 
