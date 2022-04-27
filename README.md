@@ -40,7 +40,9 @@ The data consists of speeches given by politicians during the 111th-114th Congre
 
 ```python
 # load in the data
-cong_ideology_training = pd.read_csv("raw-data/congressional_speeches_ideology.csv", encoding="ISO-8859-1")
+cong_ideology_training = pd.read_csv(
+    "raw-data/congressional_speeches_ideology.csv", 
+    encoding="ISO-8859-1")
 # keep only speeches from the 111th to the 114th congresses (overlaps with sample period)
 cong_ideology_training = cong_ideology_training[cong_ideology_training["congress"] >= 111]
 # convert text to lower case
@@ -52,148 +54,29 @@ Below we can see that we have a lot of information to go along with the speeches
 
 ```python
 # get a selection of data for viewing
-cong_ideology_training.sample(n=5, random_state=1)
+pprint(cong_ideology_training.sample(n=5, random_state=1))
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>speakerid</th>
-      <th>speech_id</th>
-      <th>lastname</th>
-      <th>firstname</th>
-      <th>chamber</th>
-      <th>state</th>
-      <th>gender</th>
-      <th>party</th>
-      <th>district</th>
-      <th>nonvoting</th>
-      <th>speech</th>
-      <th>congress</th>
-      <th>sentence_count</th>
-      <th>bioguide_id</th>
-      <th>nominate_dim1</th>
-      <th>nominate_dim2</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>336843</th>
-      <td>114120961</td>
-      <td>1140096858</td>
-      <td>REID</td>
-      <td>HARRY</td>
-      <td>S</td>
-      <td>NV</td>
-      <td>M</td>
-      <td>D</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>mr. president. it is not necessary to go into ...</td>
-      <td>114</td>
-      <td>127</td>
-      <td>R000146</td>
-      <td>-0.276</td>
-      <td>0.258</td>
-    </tr>
-    <tr>
-      <th>313296</th>
-      <td>113122390</td>
-      <td>1130092588</td>
-      <td>CRAMER</td>
-      <td>KEVIN</td>
-      <td>H</td>
-      <td>ND</td>
-      <td>M</td>
-      <td>R</td>
-      <td>0.0</td>
-      <td>voting</td>
-      <td>mr. speaker. in new town. north dakota. right ...</td>
-      <td>113</td>
-      <td>17</td>
-      <td>C001096</td>
-      <td>0.393</td>
-      <td>0.327</td>
-    </tr>
-    <tr>
-      <th>275910</th>
-      <td>113117441</td>
-      <td>1130003813</td>
-      <td>LEVIN</td>
-      <td>CARL</td>
-      <td>S</td>
-      <td>MI</td>
-      <td>M</td>
-      <td>D</td>
-      <td>NaN</td>
-      <td>voting</td>
-      <td>i thank my good friend from rhode island. who ...</td>
-      <td>113</td>
-      <td>127</td>
-      <td>L000261</td>
-      <td>-0.395</td>
-      <td>-0.116</td>
-    </tr>
-    <tr>
-      <th>186495</th>
-      <td>111115930</td>
-      <td>1110153004</td>
-      <td>OBEY</td>
-      <td>DAVID</td>
-      <td>H</td>
-      <td>WI</td>
-      <td>M</td>
-      <td>D</td>
-      <td>7.0</td>
-      <td>voting</td>
-      <td>again. as ive said. was my chairman and. as a ...</td>
-      <td>111</td>
-      <td>61</td>
-      <td>O000007</td>
-      <td>-0.450</td>
-      <td>-0.063</td>
-    </tr>
-    <tr>
-      <th>326608</th>
-      <td>114119510</td>
-      <td>1140054277</td>
-      <td>GARRETT</td>
-      <td>SCOTT</td>
-      <td>H</td>
-      <td>NJ</td>
-      <td>M</td>
-      <td>R</td>
-      <td>5.0</td>
-      <td>voting</td>
-      <td>mr. speaker. i yield myself the balance of my ...</td>
-      <td>114</td>
-      <td>12</td>
-      <td>G000548</td>
-      <td>0.688</td>
-      <td>-0.243</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+            speakerid   speech_id lastname firstname chamber state gender party  \
+    336843  114120961  1140096858     REID     HARRY       S    NV      M     D   
+    313296  113122390  1130092588   CRAMER     KEVIN       H    ND      M     R   
+    275910  113117441  1130003813    LEVIN      CARL       S    MI      M     D   
+    186495  111115930  1110153004     OBEY     DAVID       H    WI      M     D   
+    326608  114119510  1140054277  GARRETT     SCOTT       H    NJ      M     R   
+    
+            district nonvoting                                             speech  \
+    336843       NaN    voting  mr. president. it is not necessary to go into ...   
+    313296       0.0    voting  mr. speaker. in new town. north dakota. right ...   
+    275910       NaN    voting  i thank my good friend from rhode island. who ...   
+    186495       7.0    voting  again. as ive said. was my chairman and. as a ...   
+    326608       5.0    voting  mr. speaker. i yield myself the balance of my ...   
+    
+            congress  sentence_count bioguide_id  nominate_dim1  nominate_dim2  
+    336843       114             127     R000146         -0.276          0.258  
+    313296       113              17     C001096          0.393          0.327  
+    275910       113             127     L000261         -0.395         -0.116  
+    186495       111              61     O000007         -0.450         -0.063  
+    326608       114              12     G000548          0.688         -0.243  
 
 
 Here we print one of the speeches given by one of the most conservative senators in Congress, Rand Paul: 
@@ -279,12 +162,18 @@ I then ran this model on my dataset of cable news broadcasts (≈6 million 1-min
 
 ```python
 # load in the cable news slant scores as predicted from the BERT slant model
-media_slant_scores = pd.read_csv("output-data/media-slant-scores.csv", usecols = ["id", "slant"])
+media_slant_scores = pd.read_csv(
+    "output-data/media-slant-scores.csv", 
+    usecols = ["id", "slant"]
+    )
 
 # the ideology score was normalized to speed up training, now I undo this normalization to restore the original values
 media_slant_scores["slant"] = media_slant_scores["slant"]*(0.913 + 0.757) - 0.757
 # load in some meta data for the cable news segments
-tv_archive_data = pd.read_csv("raw-data/tv-archive-data.csv", usecols = ["id", "date", "channel"])
+tv_archive_data = pd.read_csv(
+    "raw-data/tv-archive-data.csv", 
+    usecols = ["id", "date", "channel"]
+    )
 
 # resolving some channel name issues
 conditions = [
@@ -296,7 +185,11 @@ choices = ["FOXNEWS", "MSNBC", "CNN"]
 tv_archive_data["channel"] = np.select(conditions, choices)
 
 # keep only cable news 
-tv_archive_data = tv_archive_data[(tv_archive_data["channel"] == "FOXNEWS") | (tv_archive_data["channel"] == "MSNBC") | (tv_archive_data["channel"] == "CNN")]
+tv_archive_data = tv_archive_data[
+    (tv_archive_data["channel"] == "FOXNEWS") | 
+    (tv_archive_data["channel"] == "MSNBC") | 
+    (tv_archive_data["channel"] == "CNN")
+    ]
 # merge the meta data in
 media_slant = media_slant_scores.merge(tv_archive_data, on="id", how="inner")
 ```
