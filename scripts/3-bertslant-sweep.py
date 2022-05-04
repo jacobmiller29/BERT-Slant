@@ -93,9 +93,10 @@ def train():
     wandb.init()
 
     # create a TransformerModel
+    # use model that was pre-trained on cable news text
     model = ClassificationModel(
         "distilbert",
-        "distilbert-base-uncased",
+        "..models/pretraining/media-pretraining-bert",
         args=model_args,
         use_cuda=usecuda,
         num_labels=1,
