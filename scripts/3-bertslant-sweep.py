@@ -96,7 +96,7 @@ def train():
     # use model that was pre-trained on cable news text
     model = ClassificationModel(
         "distilbert",
-        "..models/pretraining/media-pretraining-bert",
+        "..models/pretraining/media-pretraining-bert/",
         args=model_args,
         use_cuda=usecuda,
         num_labels=1,
